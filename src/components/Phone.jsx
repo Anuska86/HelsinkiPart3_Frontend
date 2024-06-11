@@ -3,7 +3,7 @@ const Phone = ({ phone, toggleImportance }) => {
   
     return (
       <li className="phone">
-        {phone.content}
+        {phone.name} {phone.number}
         <button onClick={toggleImportance}>{label}</button>
       </li>
     );

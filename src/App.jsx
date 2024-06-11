@@ -14,6 +14,7 @@ const App = () => {
 
   useEffect(() => {
     phonesService.getAll().then((initialPhones) => {
+      console.log(initialPhones)
       setPhones(initialPhones);
     });
   }, []);
@@ -64,21 +65,21 @@ const App = () => {
       {/*<Notification message={errorMessage} />*/}
       <div>
         <button onClick={() => setShowAll(!showAll)}>
-          Show {showAll ? "important" : "all"}
+          Show {showAll ? "favorites contacts" : "all contacts"}
         </button>
       </div>
       <ul>
         {phonesToShow.map((phone) => (
           <Phone
             key={phone.id}
-            note={phone}
+            phone={phone}
             toggleImportance={() => toggleImportanceOf(phone.id)}
           />
         ))}
       </ul>
       <form onSubmit={addPhone}>
         <input value={newPhone} onChange={handlePhoneChange} />
-        <button type="submit">Save</button>
+        <button type="submit">Save number</button>
       </form>
       <Footer />
     </div>
