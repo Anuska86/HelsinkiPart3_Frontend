@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import Phone from "./components/Phone";
 //import Notification from "./components/Notification";
@@ -7,14 +6,15 @@ import phonesService from "./services/phones";
 
 const App = () => {
   const [phones, setPhones] = useState([]);
+  const [newName, setNewName] = useState("");
   const [newPhone, setNewPhone] = useState("");
   const [showAll, setShowAll] = useState(true);
-  // eslint-disable-next-line no-unused-vars
+  // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
   const [errorMessage, setErrorMessage] = useState("Some error happened...");
 
   useEffect(() => {
     phonesService.getAll().then((initialPhones) => {
-      console.log(initialPhones)
+      console.log(initialPhones);
       setPhones(initialPhones);
     });
   }, []);
@@ -25,7 +25,14 @@ const App = () => {
     setNewPhone(event.target.value);
   };
 
-  const phonesToShow = showAll ? phones: phones.filter((phone) => phone.important);
+  const handleNameChange = (event) => {
+    console.log(event.target.value);
+    setNewName(event.target.value);
+  };
+
+  const phonesToShow = showAll
+    ? phones
+    : phones.filter((phone) => phone.important);
 
   const toggleImportanceOf = (id) => {
     const phone = phones.find((p) => p.id === id);
@@ -34,7 +41,9 @@ const App = () => {
     phonesService
       .update(id, changedPhone)
       .then((returnedPhone) => {
-        setPhones(phones.map((phone) => (phone.id !== id ? phone : returnedPhone)));
+        setPhones(
+          phones.map((phone) => (phone.id !== id ? phone : returnedPhone))
+        );
       })
       .catch((error) => {
         setErrorMessage(
@@ -47,15 +56,18 @@ const App = () => {
       });
   };
 
-  const addPhone = (event) => {
+  const addContact = (event) => {
     event.preventDefault();
     const phoneObject = {
-      content: newPhone,
-      important: Math.random() < 0.5,
+      name: newName,
+      phone: newPhone,
+      important: true,
     };
+    console.log(phoneObject)
     phonesService.create(phoneObject).then((returnedPhone) => {
       setPhones(phones.concat(returnedPhone));
       setNewPhone("");
+      setNewName("");
     });
   };
 
@@ -77,9 +89,10 @@ const App = () => {
           />
         ))}
       </ul>
-      <form onSubmit={addPhone}>
-        <input value={newPhone} onChange={handlePhoneChange} />
-        <button type="submit">Save number</button>
+      <form onSubmit={addContact}>
+        Name: <input value={newName} onChange={handleNameChange} />
+        Number: <input value={newPhone} onChange={handlePhoneChange} />
+        <button type="submit">Save contact</button>
       </form>
       <Footer />
     </div>
