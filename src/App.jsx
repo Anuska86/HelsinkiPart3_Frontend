@@ -63,7 +63,7 @@ const App = () => {
       phone: newPhone,
       important: true,
     };
-    console.log(phoneObject)
+    console.log(phoneObject);
     phonesService.create(phoneObject).then((returnedPhone) => {
       setPhones(phones.concat(returnedPhone));
       setNewPhone("");
