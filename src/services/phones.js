@@ -17,8 +17,14 @@ const getAllFavourites = () => {
 };
 
 const create = (newObject) => {
-  const request = axios.post(baseUrl+'api/phones', newObject);
-  return request.then((response) => response.data);
+  return axios.post(baseUrl+'api/phones', newObject).catch(error => {
+    console.log(error.response.data.error)
+  });
+  /*
+  return request.then((response) => response.data).catch(error => {
+    console.log(error.response.data.error)
+  });
+  */
 };
 
 const update = (id, newObject) => {

@@ -9,6 +9,7 @@ const App = () => {
   const [newName, setNewName] = useState("");
   const [newPhone, setNewPhone] = useState("");
   const [showAll, setShowAll] = useState(true);
+  const [errorOnPost, setErrorOnPost] = useState(false);
   // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
   const [errorMessage, setErrorMessage] = useState("Some error happened...");
 
@@ -65,15 +66,21 @@ const App = () => {
     };
     console.log(phoneObject);
     phonesService.create(phoneObject).then((returnedPhone) => {
-      setPhones(phones.concat(returnedPhone));
+      if(returnedPhone===undefined){
+        setErrorOnPost(true);
+      }else{
+        setErrorOnPost(false);
+        setPhones(phones.concat(returnedPhone));
+      }
       setNewPhone("");
       setNewName("");
-    });
+    })
   };
 
   return (
     <div>
       <h1>Phones</h1>
+      <h3 class="my-error" style={{display: errorOnPost ? 'block' : 'none' }}>Error: the name must have at least 3 characters and the number 8, the first 2.3 separated by a -</h3>
       {/*<Notification message={errorMessage} />*/}
       <div>
         <button onClick={() => setShowAll(!showAll)}>
